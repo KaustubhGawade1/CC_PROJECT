@@ -1,0 +1,70 @@
+services:
+  # PostgreSQL Database Service
+  postgres:
+    image: postgres:15-alpine
+    container_name: dams_postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-myuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-mypassword}
+      POSTGRES_DB: ${DB_NAME:-mydb}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dams_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-myuser}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Spring Boot Backend Service
+  backend:
+    container_name: dams_backend
+    build:
+      context: ./dams-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-mydb}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-myuser}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-mypassword}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${HIBERNATE_DDL:-create}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      APP_CORS_ALLOWED_ORIGINS: ${APP_CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173,https://front-damss.onrender.com}
+      JAVA_TOOL_OPTIONS: "-Xmx300m -Xss512k -XX:MaxMetaspaceSize=100m"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - dams_network
+    restart: unless-stopped
+
+  # React Frontend Service with Nginx
+  frontend:
+    container_name: dams_frontend
+    build:
+      context: ./front-dams-main
+      dockerfile: Dockerfile
+      args:
+        VITE_BACK_END_URL: ${VITE_BACK_END_URL:-http://localhost:8080}
+    ports:
+      - "3000:80"
+    environment:
+      VITE_BACK_END_URL: ${VITE_BACK_END_URL:-http://localhost:8080}
+    depends_on:
+      - backend
+    networks:
+      - dams_network
+    restart: unless-stopped
+
+networks:
+  dams_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
