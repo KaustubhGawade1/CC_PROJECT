@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    container_name: mydb
+    environment:
+      POSTGRES_DB: mydb                # your database name
+      POSTGRES_USER: myuser            # your database user
+      POSTGRES_PASSWORD: mypassword    # your database password
+    ports:
+      - "5432:5432"
+    networks:
+      - dams-network
+
+  backend:
+    build: .
+    image: dams-back
+    container_name: dams-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydb
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+    depends_on:
+      - db
+    networks:
+      - dams-network
+
+networks:
+  dams-network:
+    driver: bridge

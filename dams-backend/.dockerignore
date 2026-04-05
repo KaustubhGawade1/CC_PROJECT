@@ -1,0 +1,46 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+DOCKER_SETUP.md
+docker-scripts.sh
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Node (frontend) related
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Maven (backend) related
+target/
+.m2
+*.class
+
+# Environment files
+.env.local
+.env.*.local
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Docker files
+docker-compose.yml
+Dockerfile
+.docker/
+
+# OS files
+.DS_Store
+Thumbs.db
