@@ -9,6 +9,9 @@ import com.dbms.databasemanagementsystem.repository.userRoleRepo;
 import com.dbms.databasemanagementsystem.security.jwt.AuthEntryPointJwt;
 import com.dbms.databasemanagementsystem.security.jwt.AuthTokenFilter;
 import com.dbms.databasemanagementsystem.security.services.UserDetailsServiceImpl;
+
+import scala.annotation.varargs;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -73,7 +76,7 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(request -> {
-                    var config = new org.springframework.web.cors.CorsConfiguration();
+                    org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
                     config.setAllowCredentials(true);
                     config.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
                     config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
