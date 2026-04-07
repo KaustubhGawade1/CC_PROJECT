@@ -60,7 +60,7 @@ const ProductCard = ({
         {safeContentType.includes("image") ? (
           <img
             className="w-full h-full object-cover transition-transform duration-300 transform hover:scale-105"
-            src={`${import.meta.env.VITE_BACK_END_URL}/${filePath}`}
+            src={`/${filePath}`}
             alt={filename}
           />
         ) : (
@@ -93,7 +93,7 @@ const ProductCard = ({
         <div className="flex flex-col gap-2 mt-4">
           <button
             onClick={() =>
-              window.open(`${import.meta.env.VITE_BACK_END_URL}/${filePath}`, "_blank")
+              window.open(`/${filePath}`, "_blank")
             }
             className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 px-3 rounded-lg hover:from-blue-600 hover:to-purple-600 transition-colors duration-300"
           >

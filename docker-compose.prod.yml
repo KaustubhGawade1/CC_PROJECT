@@ -20,15 +20,10 @@ services:
       retries: 5
     restart: unless-stopped
 
-  # Spring Boot Backend Service
+  # Spring Boot Backend Service (uses pre-built image from registry)
   backend:
     container_name: dams_backend
-    build:
-      context: ./dams-backend
-      dockerfile: Dockerfile
-      args:
-        BUILDKIT_INLINE_CACHE: 1
-    image: cc_project-backend:latest
+    image: kaustubhgawade/backend:latest
     ports:
       - "8081:8080"
     environment:
@@ -46,12 +41,10 @@ services:
       - dams_network
     restart: unless-stopped
 
-  # React Frontend Service with Nginx
+  # React Frontend Service with Nginx (uses pre-built image from registry)
   frontend:
     container_name: dams_frontend
-    build:
-      context: ./front-dams-main
-      dockerfile: Dockerfile
+    image: kaustubhgawade/frontend:latest
     ports:
       - "3001:80"
     depends_on:

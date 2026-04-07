@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../api/api";
 import { FaCloudUploadAlt } from "react-icons/fa";
 
 const AddAsset = () => {
@@ -34,13 +34,12 @@ const AddAsset = () => {
       setUploading(true);
       setMessage("");
 
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACK_END_URL}/api/asset/add/file`,
+      const response = await api.post(
+        `/asset/add/file`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${pureToken}`,
           },
         }
       );

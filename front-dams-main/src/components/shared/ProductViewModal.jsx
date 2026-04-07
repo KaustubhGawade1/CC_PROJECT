@@ -32,7 +32,7 @@ function ProductViewModal({ open, setOpen, product }) {
             {contentType.includes("image") && filePath && (
               <div className="flex justify-center aspect-[3/2]">
                 <img
-                  src={`${import.meta.env.VITE_BACK_END_URL}/${filePath}`}
+                  src={`/${filePath}`}
                   alt={filename}
                   className="object-cover"
                 />

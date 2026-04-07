@@ -45,7 +45,7 @@ public class WebSecurityConfig {
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
-    @Value("${app.cors.allowed-origins:http://localhost:3000,http://localhost:5173,https://front-damss.onrender.com}")
+    @Value("${app.cors.allowed-origins:http://localhost:3001,http://localhost:3000,http://localhost:5173,https://front-damss.onrender.com}")
     private String allowedOrigins;
 
     @Bean
